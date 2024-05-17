@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:mobilink_v2/MainUI/login.dart';
+import 'package:mobilink_v2/UI/login.dart';
 
 class IntroductionScreens extends StatelessWidget {
   const IntroductionScreens({Key? key}) : super(key: key);

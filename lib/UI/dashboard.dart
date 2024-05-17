@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobilink_v2/MainUI/carlist.dart';
+import 'package:mobilink_v2/UI/carlist.dart';
 import 'package:mobilink_v2/utills/car_widget.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mobilink_v2/MainUI/discover.dart';
+import 'package:mobilink_v2/UI/discover.dart';
 import 'package:mobilink_v2/API/ApiService.dart';
 import 'package:mobilink_v2/Modal/car.dart';
 

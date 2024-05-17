@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobilink_v2/MainUI/dashboard.dart';
+import 'package:mobilink_v2/UI/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'discover.dart';
 import 'dashboard.dart';

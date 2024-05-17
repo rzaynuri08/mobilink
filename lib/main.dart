@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'MainUI/discover.dart';
-import 'MainUI/dashboard.dart';
-import 'MainUI/login.dart';
-import 'MainUI/Intro.dart';
+import 'UI/discover.dart';
+import 'UI/dashboard.dart';
+import 'UI/login.dart';
+import 'UI/Intro.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -42,7 +42,7 @@ class _AppStartState extends State<AppStart> {
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) {
-        return isLoggedIn ? IntroductionScreens() : LoginScreen();
+        return isLoggedIn ? DashboardScreen() : IntroductionScreens();
       },
     ));
   }
