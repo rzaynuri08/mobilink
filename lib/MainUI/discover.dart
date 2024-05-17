@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utills/car_widget.dart';
 import '../utills/dealer_widget.dart';
 import '../Adapter/available_cars.dart';
-import '../SecUI/book_car.dart';
+import '../Adapter/book_car.dart';
 
 class Showroom extends StatefulWidget {
   @override
