@@ -35,7 +35,7 @@ class _ShowroomState extends State<Showroom> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          "Dashboard",
+          "Dashboar",
         ),
         centerTitle: false,
       ),
