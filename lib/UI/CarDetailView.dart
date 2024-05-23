@@ -12,8 +12,8 @@ class CarDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Tentukan koordinat latitude dan longitude secara manual
-    final double latitude = -6.200000;
-    final double longitude = 106.816666;
+    final double latitude = -7.91785;
+    final double longitude = 113.83455;
 
     return Scaffold(
       appBar: AppBar(
@@ -115,7 +115,7 @@ class CarDetailView extends StatelessWidget {
         child: FlutterMap(
           options: MapOptions(
             center: LatLng(latitude, longitude),
-            zoom: 19.0,
+            zoom: 15.0,
           ),
           children: [
             TileLayer(
@@ -125,11 +125,11 @@ class CarDetailView extends StatelessWidget {
             MarkerLayer(
               markers: [
                 Marker(
-                  point: LatLng(30, 40),
+                  point: LatLng(latitude, longitude),
                   width: 80,
                   height: 80,
                   child: Icon(
-                    Icons.directions_car,
+                    Icons.location_pin,
                     color: Colors.red,
                     size: 40,
                   ),
