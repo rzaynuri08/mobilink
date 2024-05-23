@@ -12,6 +12,7 @@ class CarListView extends StatelessWidget {
     TextEditingController searchController = TextEditingController();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Discover'),
       ),
@@ -21,12 +22,26 @@ class CarListView extends StatelessWidget {
           child: Column(
             children: [
               TextField(
-                controller: searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
+                  hintStyle: TextStyle(fontSize: 16),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(
+                      width: 0, 
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                  contentPadding: EdgeInsets.only(left: 30,),
+                  suffixIcon: Padding(
+                    padding: EdgeInsets.only(right: 24.0, left: 16.0),
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                      size: 24,
+                    ),
                   ),
                 ),
               ),
@@ -49,15 +64,12 @@ class CarListView extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 8),
-              SizedBox(
-                height: 300,
-                child: ListView.builder(
+              Container(
+                height: 220,
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  itemCount: cars.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildCarCard(context, cars[index]);
-                  },
+                  children: _buildCarCards(context),
                 ),
               ),
               SizedBox(height: 16),
@@ -69,16 +81,20 @@ class CarListView extends StatelessWidget {
     );
   }
 
+  List<Widget> _buildCarCards(BuildContext context) {
+    return cars.map((car) => _buildCarCard(context, car)).toList();
+  }
+
   Widget _buildCarCard(BuildContext context, CarModel car) {
     return GestureDetector(
       onTap: () {
-      _onCarCardTapped(context, car);
-    },
+        _onCarCardTapped(context, car);
+      },
       child: Container(
-        width: 250,
-        height: 300,
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        width: 180,
+        margin: EdgeInsets.symmetric(horizontal: 4),
         child: Card(
+          color: Colors.white,
           elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -89,7 +105,7 @@ class CarListView extends StatelessWidget {
               Image.network(
                 car.foto_mobil,
                 width: double.infinity,
-                height: 150,
+                height: 100,
                 fit: BoxFit.cover,
               ),
               Padding(
@@ -170,11 +186,11 @@ class CarListView extends StatelessWidget {
   }
 
   void _onCarCardTapped(BuildContext context, CarModel car) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => CarDetailView(car: car),
-    ),
-  );
-}
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CarDetailView(car: car),
+      ),
+    );
+  }
 }
