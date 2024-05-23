@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mobilink_v2/Modal/car.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarDetailView extends StatelessWidget {
-  final CarModel car; // Menggunakan objek CarModel sebagai parameter
+  final CarModel car;
 
-  CarDetailView({required this.car}); // Menggunakan objek CarModel sebagai parameter
+  CarDetailView({required this.car});
 
   @override
   Widget build(BuildContext context) {
+    // Tentukan koordinat latitude dan longitude secara manual
+    final double latitude = -6.200000;
+    final double longitude = 106.816666;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Car Detail'),
@@ -31,13 +38,6 @@ class CarDetailView extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              '${car.hargaSewaPerhari}',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
             SizedBox(height: 16),
             SizedBox(
               height: 100,
@@ -50,6 +50,30 @@ class CarDetailView extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 16),
+            Expanded(child: _buildMapCard(latitude, longitude)),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                '${car.hargaSewaPerhari} / day',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Aksi yang diambil saat tombol ditekan (misalnya, pemesanan)
+              },
+              child: Text('Order'),
+            ),
           ],
         ),
       ),
@@ -57,30 +81,72 @@ class CarDetailView extends StatelessWidget {
   }
 
   Widget _buildCarInfoCard(IconData icon, String label, String value) {
-  return Card(
-    // Menetapkan lebar kartu agar sama untuk semua
-    margin: EdgeInsets.symmetric(horizontal: 4), // Atur jarak antar kartu
-    child: SizedBox( // Menggunakan SizedBox untuk menetapkan ukuran kartu
-      width: 150, // Atur lebar kartu sesuai kebutuhan
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(icon),
-            SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 4),
+      child: SizedBox(
+        width: 150,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon),
+              SizedBox(height: 8),
+              Text(
+                label,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              Text(value),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMapCard(double latitude, double longitude) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 4),
+      child: SizedBox(
+        height: 200,
+        child: FlutterMap(
+          options: MapOptions(
+            center: LatLng(latitude, longitude),
+            zoom: 19.0,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'com.example.app',
             ),
-            Text(value),
+            MarkerLayer(
+              markers: [
+                Marker(
+                  point: LatLng(30, 40),
+                  width: 80,
+                  height: 80,
+                  child: Icon(
+                    Icons.directions_car,
+                    color: Colors.red,
+                    size: 40,
+                  ),
+                ),
+              ],
+            ),
+            RichAttributionWidget(
+              attributions: [
+                TextSourceAttribution(
+                  'OpenStreetMap contributors',
+                  onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
