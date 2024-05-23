@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobilink_v2/Adapter/available_cars.dart';
 import 'package:mobilink_v2/Modal/car.dart';
 import 'package:mobilink_v2/UI/CarDetailView.dart';
+import '../utills/constants.dart';
 
 class CarListView extends StatelessWidget {
   final List<CarModel> cars;
@@ -13,15 +15,15 @@ class CarListView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('Discover'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TextField(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+
+          Container(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Search',
                   hintStyle: TextStyle(fontSize: 16),
@@ -45,38 +47,205 @@ class CarListView extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Top Deals',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          Expanded(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Column(
+                  children: [
+
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          Text(
+                            "TOP DEALS",
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+
+                          Row(
+                            children: [
+
+                              Text(
+                                "view all",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: kPrimaryColor,
+                                ),
+                              ),
+
+                              SizedBox(
+                                width: 8,
+                              ),
+
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 12,
+                                color: kPrimaryColor,
+                              ),
+
+                            ],
+                          ),
+
+                        ],
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Handle "View All" button press
-                    },
-                    child: Text('View All >'),
-                  ),
-                ],
-              ),
-              Container(
-                height: 220,
-                child: ListView(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  children: _buildCarCards(context),
+
+                    Container(
+                      height: 220,
+                      child: ListView(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        children: _buildCarCards(context)
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AvailableCars()),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 16, right: 16, left: 16),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+
+                                  Text(
+                                    "Available Cars",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+
+                                  Text(
+                                    "Long term and short term",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                height: 50,
+                                width: 50,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          Text(
+                            "TOP DEALERS",
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[400],
+                            ),
+                          ),
+
+                          Row(
+                            children: [
+
+                              Text(
+                                "view all",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: kPrimaryColor,
+                                ),
+                              ),
+
+                              SizedBox(
+                                width: 8,
+                              ),
+
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 12,
+                                color: kPrimaryColor,
+                              ),
+
+                            ],
+                          ),
+
+                        ],
+                      ),
+                    ),
+
+                    Container(
+                      height: 150,
+                      margin: EdgeInsets.only(bottom: 16),
+                      child: ListView(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                      ),
+                    ),
+
+                  ],
                 ),
               ),
-              SizedBox(height: 16),
-              _buildAvailableCarsButton(),
-            ],
+            ),
           ),
-        ),
+
+        ],
       ),
     );
   }
@@ -93,45 +262,46 @@ class CarListView extends StatelessWidget {
       child: Container(
         width: 180,
         margin: EdgeInsets.symmetric(horizontal: 4),
-        child: Card(
+        decoration: BoxDecoration(
           color: Colors.white,
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.network(
+          borderRadius: BorderRadius.circular(12),
+
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.network(
                 car.foto_mobil,
                 width: double.infinity,
                 height: 100,
                 fit: BoxFit.cover,
               ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      car.namaMobil,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    car.namaMobil,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      '${car.hargaSewaPerhari}',
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    '${car.hargaSewaPerhari}',
+                    style: TextStyle(
+                      fontSize: 14,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

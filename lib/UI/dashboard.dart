@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobilink_v2/UI/Profile.dart';
 import 'package:mobilink_v2/UI/carlist.dart';
 import 'package:mobilink_v2/utills/car_widget.dart';
 import 'login.dart';
@@ -84,25 +85,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return Showroom();
         case 1:
           return FutureBuilder<List<CarModel>>(
-          future: ApiService().fetchCars(),
-          builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.error}'));
-      } else {
-        List<CarModel> cars = snapshot.data ?? [];
-        return CarListView(cars: cars);
-      }
-    },
-  );
-        case 2:
-          return Center(
-            child: Text(
-              'Profile',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
+            future: ApiService().fetchCars(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                List<CarModel> cars = snapshot.data ?? [];
+                return CarListView(cars: cars);
+              }
+            },
           );
+        case 2:
+          return ProfileScreen();
         default:
           return Center(
             child: Text(
@@ -114,51 +110,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mobilink'),
-        centerTitle: true,
-        automaticallyImplyLeading: true, // Menampilkan ikon hamburger untuk membuka Drawer
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Center(
-                child: Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-            ),
-            for (int i = 0; i < 3; i++) // Adjusted loop to match the menu items
-              ListTile(
-                title: Text(_menuTitles[i]),
-                leading: Icon(_menuIcons[i]),
-                onTap: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    _selectedIndex = i;
-                  });
-                },
-              ),
-            ListTile(
-              title: Text('Logout'),
-              leading: Icon(Icons.logout),
-              onTap: () {
-                Navigator.pop(context);
-                _showLogoutDialog();
-              },
-            ),
-          ],
-        ),
-      ),
       body: _getSelectedPage(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

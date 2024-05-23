@@ -9,34 +9,32 @@ class IntroductionScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: IntroductionScreen(
         pages: [
           PageViewModel(
-          title: 'Kemudahan dalam Rental Mobil',
-          body: 'Temukan kemudahan dalam menyewa mobil dengan layanan kami yang cepat dan praktis.',
-          image: buildImage("assets/images/image_1.png"),
-          decoration: getPageDecoration(),
-        ),
-        PageViewModel(
-          title: 'Nikmati Liburan Anda dengan Mobilink',
-          body: 'Liburan Anda lebih menyenangkan dengan Mobilink. Pilihan mobil berkualitas untuk setiap perjalanan.',
-          image: buildImage("assets/images/image_2.png"),
-          decoration: getPageDecoration(),
-        ),
-        PageViewModel(
-          title: 'Nikmati Kenyamanan dalam Berwisata',
-          body: 'Rasakan kenyamanan maksimal dalam setiap perjalanan wisata Anda bersama layanan prima kami.',
-          image: buildImage("assets/images/image_3.png"),
-          decoration: getPageDecoration(),
-        ),
-
+            title: 'Kemudahan dalam Rental Mobil',
+            body: 'Temukan kemudahan dalam menyewa mobil dengan layanan kami yang cepat dan praktis.',
+            image: buildImage("assets/images/image_1.png"),
+            decoration: getPageDecoration(),
+          ),
+          PageViewModel(
+            title: 'Nikmati Liburan Anda dengan Mobilink',
+            body: 'Liburan Anda lebih menyenangkan dengan Mobilink. Pilihan mobil berkualitas untuk setiap perjalanan.',
+            image: buildImage("assets/images/image_2.png"),
+            decoration: getPageDecoration(),
+          ),
+          PageViewModel(
+            title: 'Nikmati Kenyamanan dalam Berwisata',
+            body: 'Rasakan kenyamanan maksimal dalam setiap perjalanan wisata Anda bersama layanan prima kami.',
+            image: buildImage("assets/images/image_3.png"),
+            decoration: getPageDecoration(),
+          ),
         ],
         onDone: () {
           Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
         },
         scrollPhysics: const ClampingScrollPhysics(),
         showDoneButton: true,
