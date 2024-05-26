@@ -1,42 +1,37 @@
 import 'package:flutter/material.dart';
-import '../utills/constants.dart';
-import '../utills/data.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../utills/car_widget.dart';
-import '../utills/dealer_widget.dart';
-import '../Adapter/available_cars.dart';
-import '../Adapter/book_car.dart';
+import 'package:mobilink_v2/Adapter/available_cars.dart';
+import 'package:mobilink_v2/Modal/car.dart';
+import 'package:mobilink_v2/UI/CarDetailView.dart';
+import '../../utills/constants.dart';
 
-class Showroom extends StatefulWidget {
-  @override
-  _ShowroomState createState() => _ShowroomState();
-}
+class CarListView extends StatelessWidget {
+  final List<CarModel> cars;
 
-class _ShowroomState extends State<Showroom> {
-  List<NavigationItem> navigationItems = getNavigationItemList();
-  late NavigationItem selectedItem;
-
-  List<Car> cars = getCarList();
-  List<Dealer> dealers = getDealerList();
-  
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      selectedItem = navigationItems[0];
-    });
-  }
+  CarListView({required this.cars});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = TextEditingController();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.only(left: 16, top: 40),
+            child: Text(
+              'discover',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
 
           Container(
-            padding: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.only(bottom: 10, top: 10), // Added top padding for spacing
             child: Padding(
               padding: EdgeInsets.all(16),
               child: TextField(
@@ -125,11 +120,11 @@ class _ShowroomState extends State<Showroom> {
                     ),
 
                     Container(
-                      height: 285,
+                      height: 220,
                       child: ListView(
                         physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
-                        children: buildDeals(),
+                        children: _buildCarCards(context)
                       ),
                     ),
 
@@ -252,7 +247,6 @@ class _ShowroomState extends State<Showroom> {
                       child: ListView(
                         physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
-                        children: buildDealers(),
                       ),
                     ),
 
@@ -267,75 +261,67 @@ class _ShowroomState extends State<Showroom> {
     );
   }
 
-  List<Widget> buildDeals(){
-    List<Widget> list = [];
-    for (var i = 0; i < cars.length; i++) {
-      list.add(
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BookCar(car: cars[i])),
-            );
-          },
-          child: buildCar(cars[i], i)
-        )
-      );
-    }
-    return list;
+  List<Widget> _buildCarCards(BuildContext context) {
+    return cars.map((car) => _buildCarCard(context, car)).toList();
   }
 
-  List<Widget> buildDealers(){
-    List<Widget> list = [];
-    for (var i = 0; i < dealers.length; i++) {
-      list.add(buildDealer(dealers[i], i));
-    }
-    return list;
-  }
-
-  List<Widget> buildNavigationItems(){
-    List<Widget> list = [];
-    for (var navigationItem in navigationItems) {
-      list.add(buildNavigationItem(navigationItem));
-    }
-    return list;
-  }
-
-  Widget buildNavigationItem(NavigationItem item){
+  Widget _buildCarCard(BuildContext context, CarModel car) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectedItem = item;
-        });
+        _onCarCardTapped(context, car);
       },
       child: Container(
-        width: 50,
-        child: Stack(
-          children: <Widget>[
-
-            selectedItem == item 
-            ? Center(
-              child: Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: kPrimaryColorShadow,
-                ),
+        width: 180,
+        margin: EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.network(
+                car.foto_mobil,
+                width: double.infinity,
+                height: 100,
+                fit: BoxFit.cover,
               ),
-            )
-            : Container(),
-
-            Center(
-              child: Icon(
-                item.iconData,
-                color: selectedItem == item ? kPrimaryColor : Colors.grey[400],
-                size: 24,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    car.namaMobil,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    '${car.hargaSewaPerhari}',
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
-            )
-
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _onCarCardTapped(BuildContext context, CarModel car) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CarDetailView(car: car),
       ),
     );
   }

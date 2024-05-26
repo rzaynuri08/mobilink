@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'UI/discover.dart';
 import 'UI/dashboard.dart';
 import 'UI/login.dart';
 import 'UI/Intro.dart';

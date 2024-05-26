@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobilink_v2/UI/Profile.dart';
-import 'package:mobilink_v2/UI/carlist.dart';
-import 'package:mobilink_v2/utills/car_widget.dart';
+import 'package:mobilink_v2/UI/Pages/Profile.dart';
+import 'package:mobilink_v2/UI/Pages/Discover.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mobilink_v2/UI/discover.dart';
 import 'package:mobilink_v2/API/ApiService.dart';
 import 'package:mobilink_v2/Modal/car.dart';
 
@@ -82,9 +80,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Widget _getSelectedPage() {
       switch (_selectedIndex) {
         case 0:
-          return Showroom();
-        case 1:
-          return FutureBuilder<List<CarModel>>(
+        return FutureBuilder<List<CarModel>>(
             future: ApiService().fetchCars(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -97,6 +93,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
             },
           );
+        case 1:
+          
         case 2:
           return ProfileScreen();
         default:
@@ -114,8 +112,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Dashboard',
+            icon: Icon(Icons.compass_calibration_rounded),
+            label: 'Discover',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),

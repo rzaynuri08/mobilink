@@ -5,19 +5,33 @@ import 'package:mobilink_v2/Modal/car.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mobilink_v2/utills/constants.dart';
 
-class CarDetailView extends StatelessWidget {
+class CarDetailView extends StatefulWidget {
   final CarModel car;
 
   CarDetailView({required this.car});
 
   @override
+  _CarDetailViewState createState() => _CarDetailViewState();
+}
+
+class _CarDetailViewState extends State<CarDetailView> {
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+
+  @override
+  void dispose() {
+    startDateController.dispose();
+    endDateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Tentukan koordinat latitude dan longitude secara manual
     final double latitude = -7.91785;
     final double longitude = 113.83455;
 
     return Scaffold(
-      backgroundColor: Colors.white,  // Perbaikan: Salah ketik pada properti "backgroundColor"
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -110,14 +124,14 @@ class CarDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.network(
-                        car.foto_mobil,
+                        widget.car.foto_mobil,
                         width: double.infinity,
                         height: 220,
                         fit: BoxFit.cover,
                       ),
                       SizedBox(height: 16),
                       Text(
-                        car.namaMobil,
+                        widget.car.namaMobil,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -129,9 +143,9 @@ class CarDetailView extends StatelessWidget {
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
-                            _buildCarInfoCard(Icons.people, 'Kapasitas', car.kapasitasPenumpang),
-                            _buildCarInfoCard(Icons.local_gas_station, 'Bahan Bakar', car.bahanBakar),
-                            _buildCarInfoCard(Icons.speed, 'Kecepatan', '${car.kecepatan} km/h'),
+                            _buildCarInfoCard(Icons.people, 'Kapasitas', widget.car.kapasitasPenumpang),
+                            _buildCarInfoCard(Icons.local_gas_station, 'Bahan Bakar', widget.car.bahanBakar),
+                            _buildCarInfoCard(Icons.speed, 'Kecepatan', '${widget.car.kecepatan} km/h'),
                           ],
                         ),
                       ),
@@ -172,7 +186,7 @@ class CarDetailView extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Rp. ${car.hargaSewaPerhari}",
+                      "Rp. ${widget.car.hargaSewaPerhari}",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -195,7 +209,12 @@ class CarDetailView extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Aksi yang diambil saat tombol ditekan (misalnya, pemesanan)
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return _buildBookingDialog(context);
+                  },
+                );
               },
               child: Container(
                 height: 50,
@@ -291,6 +310,89 @@ class CarDetailView extends StatelessWidget {
                   onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBookingDialog(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Book this car",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: startDateController,
+              decoration: InputDecoration(
+                labelText: "Start Date",
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.calendar_today),
+              ),
+              readOnly: true,
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2101),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    startDateController.text = pickedDate.toLocal().toString().split(' ')[0];
+                  });
+                }
+              },
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: endDateController,
+              decoration: InputDecoration(
+                labelText: "End Date",
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.calendar_today),
+              ),
+              readOnly: true,
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2101),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    endDateController.text = pickedDate.toLocal().toString().split(' ')[0];
+                  });
+                }
+              },
+            ),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                // Add your booking logic here
+              },
+              child: Text("Book Now"),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
             ),
           ],
         ),
