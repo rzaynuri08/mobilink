@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobilink_v2/UI/Pages/Profile.dart';
 import 'package:mobilink_v2/UI/Pages/Discover.dart';
+import 'package:mobilink_v2/utills/constants.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobilink_v2/API/ApiService.dart';
@@ -125,7 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).primaryColor,
+        selectedItemColor: kPrimaryColor,
         unselectedItemColor: Colors.black,
         onTap: _onItemTapped,
       ),

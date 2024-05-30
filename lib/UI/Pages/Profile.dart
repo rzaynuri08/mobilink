@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String? username = prefs.getString('username');
 
     if (username != null) {
-      Uri url = Uri.parse('https://mobilinkqz.my.id/api/billy123/users');
+      Uri url = Uri.parse('https://mobilink.my.id/api/billy123/users');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -179,8 +179,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           CircleAvatar(
             radius: 40.0,
             backgroundImage: user!.foto_profil != null
-                ? NetworkImage("https://mobilinkqz.my.id/${user!.foto_profil!}")
-                : AssetImage('https://mobilinkqz.my.id/') as ImageProvider,
+                ? NetworkImage("https://mobilink.my.id/${user!.foto_profil!}")
+                : AssetImage('https://mobilink.my.id/') as ImageProvider,
           ),
           SizedBox(width: 16.0),
           Column(

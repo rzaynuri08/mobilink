@@ -33,130 +33,143 @@ class _CarDetailViewState extends State<CarDetailView> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Container(
+                width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    SizedBox(height: 80), // Space for the fixed buttons
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              width: 45,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(15),
-                                ),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.keyboard_arrow_left,
-                                color: Colors.black,
-                                size: 28,
-                              ),
+                          Text(
+                            widget.car.namaMobil,
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
                           ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color: kPrimaryColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.bookmark_border,
-                                  color: Colors.white,
-                                  size: 22,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
-                                  ),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.share,
-                                  color: Colors.black,
-                                  size: 22,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            widget.car.tipe,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
+                          SizedBox(height: 16),
+                          Image.network(
+                            "https://mobilink.my.id/${widget.car.foto_mobil}",
+                            width: double.infinity,
+                            height: 220,
+                            fit: BoxFit.cover,
+                          ),
+                          SizedBox(height: 18),
+                          Text(
+                            "Specifications",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 100,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                _buildCarInfoCard(Icons.people, 'Kapasitas', widget.car.kapasitasPenumpang),
+                                _buildCarInfoCard(Icons.local_gas_station, 'Bahan Bakar', widget.car.bahanBakar),
+                                _buildCarInfoCard(Icons.speed, 'Kecepatan', '${widget.car.kecepatan} km/h'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 18),
+                          _buildMapCard(latitude, longitude),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            // Top bar background
+            Container(
+              height: 80,
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Colors.black,
+                        size: 28,
+                      ),
+                    ),
+                  ),
+                  Row(
                     children: [
-                      Image.network(
-                        widget.car.foto_mobil,
-                        width: double.infinity,
-                        height: 220,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        widget.car.namaMobil,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        width: 45,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.bookmark_border,
+                          color: Colors.white,
+                          size: 22,
                         ),
                       ),
-                      SizedBox(height: 18),
                       SizedBox(
-                        height: 100,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            _buildCarInfoCard(Icons.people, 'Kapasitas', widget.car.kapasitasPenumpang),
-                            _buildCarInfoCard(Icons.local_gas_station, 'Bahan Bakar', widget.car.bahanBakar),
-                            _buildCarInfoCard(Icons.speed, 'Kecepatan', '${widget.car.kecepatan} km/h'),
-                          ],
+                        width: 16,
+                      ),
+                      Container(
+                        width: 45,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.share,
+                          color: Colors.black,
+                          size: 22,
                         ),
                       ),
-                      SizedBox(height: 18),
-                      Expanded(child: _buildMapCard(latitude, longitude)),
                     ],
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Container(
