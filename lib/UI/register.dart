@@ -45,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       // Send registration data to API
       try {
-        Uri url = Uri.parse('https://mobilinkqz.my.id/api/billy123/users');
+        Uri url = Uri.parse('https://mobilink.my.id/api/billy123/users');
         await http.post(
           url,
           body: json.encode(userData),

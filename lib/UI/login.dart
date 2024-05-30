@@ -14,7 +14,7 @@ class LoginScreen extends StatelessWidget {
     final String password = _passwordController.text;
 
     try {
-      Uri url = Uri.parse('https://mobilinkqz.my.id/api/billy123/users');
+      Uri url = Uri.parse('https://mobilink.my.id/api/billy123/users');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
