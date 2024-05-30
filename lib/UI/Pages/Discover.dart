@@ -25,19 +25,22 @@ class CarListView extends StatelessWidget {
     return UserDataFetcher(
       builder: (user) {
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: kPrimaryColor,
           body: Column(
             children: [
               Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 6),
+                color: kPrimaryColor,
+                padding: EdgeInsets.only(top: 50, left: 16, right: 16, bottom: 6),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      'assets/images/logo.png', // Path to your image asset
-                      width: 100, // Adjust the width as needed
-                      height: 40, // Adjust the height as needed
+                    Text(
+                      'Mobilink',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     CircleAvatar(
                       backgroundImage: NetworkImage(
@@ -59,31 +62,51 @@ class CarListView extends StatelessWidget {
                         children: [
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[100],
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: TextField(
-                                controller: SearchController(),
-                                decoration: InputDecoration(
-                                  hintText: 'Search a car...',
-                                  hintStyle: TextStyle(fontSize: 16),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide.none,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  "Nikmati liburan anda",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[100],
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                                  suffixIcon: Padding(
-                                    padding: EdgeInsets.only(right: 16.0),
-                                    child: Icon(
-                                      Icons.search,
-                                      color: Colors.black,
-                                      size: 24,
+                                ),
+                                Text(
+                                  "dengan layanan kami",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[100],
+                                  ),
+                                ),
+                                SizedBox(height: 24),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: TextField(
+                                    controller: SearchController(),
+                                    decoration: InputDecoration(
+                                      hintText: 'Search a car...',
+                                      hintStyle: TextStyle(fontSize: 16),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                                      suffixIcon: Padding(
+                                        padding: EdgeInsets.only(right: 16.0),
+                                        child: Icon(
+                                          Icons.search,
+                                          color: Colors.black,
+                                          size: 24,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         ],
@@ -258,7 +281,7 @@ class CarListView extends StatelessWidget {
       },
       child: Container(
         width: 180,
-        margin: EdgeInsets.symmetric(horizontal: 4),
+        margin: EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -383,7 +406,7 @@ class _DealerListViewState extends State<DealerListView> {
     },
     child: Container(
       width: 150,
-      margin: EdgeInsets.symmetric(horizontal: 8),
+      margin: EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -56,7 +58,7 @@ class _CarDetailViewState extends State<CarDetailView> {
                           Text(
                             widget.car.tipe,
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -71,19 +73,28 @@ class _CarDetailViewState extends State<CarDetailView> {
                           Text(
                             "Specifications",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          SizedBox(height: 12),
                           SizedBox(
                             height: 100,
                             child: ListView(
                               scrollDirection: Axis.horizontal,
                               children: [
-                                _buildCarInfoCard(Icons.people, 'Kapasitas', widget.car.kapasitasPenumpang),
-                                _buildCarInfoCard(Icons.local_gas_station, 'Bahan Bakar', widget.car.bahanBakar),
-                                _buildCarInfoCard(Icons.speed, 'Kecepatan', '${widget.car.kecepatan} km/h'),
+                                _buildCarInfoCard(Icons.people, 'Kapasitas', widget.car.kapasitasPenumpang, 0),
+                                _buildCarInfoCard(Icons.local_gas_station, 'Bahan Bakar', widget.car.bahanBakar, 1),
+                                _buildCarInfoCard(Icons.speed, 'Kecepatan', '${widget.car.kecepatan}', 2),
                               ],
+                            ),
+                          ),
+                          SizedBox(height: 12),
+                          Text(
+                            "Maps",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(height: 18),
@@ -266,35 +277,52 @@ class _CarDetailViewState extends State<CarDetailView> {
     );
   }
 
-  Widget _buildCarInfoCard(IconData icon, String label, String value) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      shadowColor: Colors.white,
-      elevation: 5,
-      child: SizedBox(
-        width: 150,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(icon),
-              SizedBox(height: 8),
-              Text(
-                label,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+  Widget _buildCarInfoCard(IconData icon, String label, String value, int index) {
+  // Daftar warna yang akan digunakan
+  List<Color> cardColors = [
+    Color(0xFF6126AD),
+    Color(0xFFFE5598),
+    Color(0xFFFFCD2D),
+    Color(0xFF03C3DA),
+    Colors.purple,
+  ];
+
+  return Card(
+    margin: EdgeInsets.symmetric(horizontal: 4),
+    shadowColor: Colors.white,
+    elevation: 5,
+    color: cardColors[index % cardColors.length], // Menggunakan warna bergantian dari daftar warna
+    child: SizedBox(
+      width: 150,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+            ),
+            SizedBox(height: 8),
+            Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white
               ),
-              Text(value),
-            ],
-          ),
+            ),
+            Text(value,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
       ),
-    );
-  }
-
+    ),
+  );
+}
   Widget _buildMapCard(double latitude, double longitude) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 4),

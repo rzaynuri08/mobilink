@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: <Widget>[
                 Container(
                   alignment: Alignment.topLeft,
-                  padding: EdgeInsets.only(top: 40, left: 16),
+                  padding: EdgeInsets.only(top: 50, left: 16),
                   child: Text(
                     'Profile',
                     style: TextStyle(
