@@ -19,7 +19,7 @@ class CarDetailView extends StatefulWidget {
 class _CarDetailViewState extends State<CarDetailView> {
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
-
+  
   @override
   void dispose() {
     startDateController.dispose();
@@ -66,7 +66,7 @@ class _CarDetailViewState extends State<CarDetailView> {
                           Image.network(
                             "https://mobilink.my.id/${widget.car.foto_mobil}",
                             width: double.infinity,
-                            height: 220,
+                            height: null,
                             fit: BoxFit.cover,
                           ),
                           SizedBox(height: 18),

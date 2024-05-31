@@ -29,4 +29,16 @@ class ApiService {
       throw Exception('Failed to load dealers');
     }
   }
+  
+   Future<List<CarModel>> fetchDealerCars(String username) async {
+    final response = await http.get(Uri.parse('https://mobilink.my.id/api/billy123/mobil/$username'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = json.decode(response.body);
+      List<CarModel> cars = body.map((dynamic item) => CarModel.fromJson(item)).toList();
+      return cars;
+    } else {
+      throw Exception('Failed to load dealer cars');
+    }
+  }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobilink_v2/API/ApiService.dart';
-import 'package:mobilink_v2/Adapter/available_cars.dart';
+import 'package:mobilink_v2/UI/available_cars.dart';
 import 'package:mobilink_v2/Modal/car.dart';
 import 'package:mobilink_v2/Modal/user.dart';
 import 'package:mobilink_v2/UI/CarDetailView.dart';
