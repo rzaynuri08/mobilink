@@ -1,11 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mobilink_v2/Modal/car.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mobilink_v2/utills/constants.dart';
+import 'package:mobilink_v2/UI/BookingPage.dart';
 
 class CarDetailView extends StatefulWidget {
   final CarModel car;
@@ -19,11 +19,15 @@ class CarDetailView extends StatefulWidget {
 class _CarDetailViewState extends State<CarDetailView> {
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
-  
+  TextEditingController startTimeController = TextEditingController();
+  TextEditingController endTimeController = TextEditingController();
+
   @override
   void dispose() {
     startDateController.dispose();
     endDateController.dispose();
+    startTimeController.dispose();
+    endTimeController.dispose();
     super.dispose();
   }
 
@@ -241,12 +245,10 @@ class _CarDetailViewState extends State<CarDetailView> {
             ),
             GestureDetector(
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return _buildBookingDialog(context);
-                  },
-                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BookingPage(car: widget.car)),
+                  );
               },
               child: Container(
                 height: 50,
@@ -278,51 +280,53 @@ class _CarDetailViewState extends State<CarDetailView> {
   }
 
   Widget _buildCarInfoCard(IconData icon, String label, String value, int index) {
-  // Daftar warna yang akan digunakan
-  List<Color> cardColors = [
-    Color(0xFF6126AD),
-    Color(0xFFFE5598),
-    Color(0xFFFFCD2D),
-    Color(0xFF03C3DA),
-    Colors.purple,
-  ];
+    // List of colors to be used for the cards
+    List<Color> cardColors = [
+      Color(0xFF6126AD),
+      Color(0xFFFE5598),
+      Color(0xFFFFCD2D),
+      Color(0xFF03C3DA),
+      Colors.purple,
+    ];
 
-  return Card(
-    margin: EdgeInsets.symmetric(horizontal: 4),
-    shadowColor: Colors.white,
-    elevation: 5,
-    color: cardColors[index % cardColors.length], // Menggunakan warna bergantian dari daftar warna
-    child: SizedBox(
-      width: 150,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: Colors.white,
-            ),
-            SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white
-              ),
-            ),
-            Text(value,
-              style: TextStyle(
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 4),
+      shadowColor: Colors.white,
+      elevation: 5,
+      color: cardColors[index % cardColors.length], // Use colors in a cyclic manner
+      child: SizedBox(
+        width: 150,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
                 color: Colors.white,
               ),
-            ),
-          ],
+              SizedBox(height: 8),
+              Text(
+                label,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                value,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
+
   Widget _buildMapCard(double latitude, double longitude) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 4),
@@ -367,31 +371,18 @@ class _CarDetailViewState extends State<CarDetailView> {
   }
 
   Widget _buildBookingDialog(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return AlertDialog(
+      title: Text('Booking'),
+      content: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "Book this car",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 16),
             TextField(
               controller: startDateController,
+              readOnly: true,
               decoration: InputDecoration(
-                labelText: "Start Date",
-                border: OutlineInputBorder(),
+                labelText: 'Start Date',
                 suffixIcon: Icon(Icons.calendar_today),
               ),
-              readOnly: true,
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
                   context: context,
@@ -401,20 +392,37 @@ class _CarDetailViewState extends State<CarDetailView> {
                 );
                 if (pickedDate != null) {
                   setState(() {
-                    startDateController.text = pickedDate.toLocal().toString().split(' ')[0];
+                    startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                   });
                 }
               },
             ),
-            SizedBox(height: 16),
+            TextField(
+              controller: startTimeController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Start Time',
+                suffixIcon: Icon(Icons.access_time),
+              ),
+              onTap: () async {
+                TimeOfDay? pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+                if (pickedTime != null) {
+                  setState(() {
+                    startTimeController.text = pickedTime.format(context);
+                  });
+                }
+              },
+            ),
             TextField(
               controller: endDateController,
+              readOnly: true,
               decoration: InputDecoration(
-                labelText: "End Date",
-                border: OutlineInputBorder(),
+                labelText: 'End Date',
                 suffixIcon: Icon(Icons.calendar_today),
               ),
-              readOnly: true,
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
                   context: context,
@@ -424,28 +432,48 @@ class _CarDetailViewState extends State<CarDetailView> {
                 );
                 if (pickedDate != null) {
                   setState(() {
-                    endDateController.text = pickedDate.toLocal().toString().split(' ')[0];
+                    endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                   });
                 }
               },
             ),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                // Add your booking logic here
-              },
-              child: Text("Book Now"),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            TextField(
+              controller: endTimeController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'End Time',
+                suffixIcon: Icon(Icons.access_time),
               ),
+              onTap: () async {
+                TimeOfDay? pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+                if (pickedTime != null) {
+                  setState(() {
+                    endTimeController.text = pickedTime.format(context);
+                  });
+                }
+              },
             ),
           ],
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            // Handle booking logic here
+            Navigator.of(context).pop();
+          },
+          child: Text('Book'),
+        ),
+      ],
     );
   }
 }
