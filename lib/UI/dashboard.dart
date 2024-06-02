@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobilink_v2/UI/Pages/Chats.dart';
 import 'package:mobilink_v2/UI/Pages/Profile.dart';
 import 'package:mobilink_v2/UI/Pages/Discover.dart';
 import 'package:mobilink_v2/utills/constants.dart';
@@ -83,7 +84,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
           );
         case 1:
-        
+          return ChatPage();
         case 2: 
 
         case 3:

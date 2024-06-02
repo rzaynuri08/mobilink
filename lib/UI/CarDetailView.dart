@@ -468,7 +468,6 @@ class _CarDetailViewState extends State<CarDetailView> {
         ),
         TextButton(
           onPressed: () {
-            // Handle booking logic here
             Navigator.of(context).pop();
           },
           child: Text('Book'),

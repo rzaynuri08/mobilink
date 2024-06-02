@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobilink_v2/Modal/car.dart';
 import 'package:mobilink_v2/Shared/number_to_words.dart';
+import 'package:mobilink_v2/UI/UploadPage.dart';
 import 'package:mobilink_v2/utills/constants.dart';
 import 'package:mobilink_v2/Shared/number_to_words.dart';  // Import the number_to_words.dart file
 
@@ -264,8 +265,10 @@ class _BookingPageState extends State<BookingPage> {
           height: 50,
           child: ElevatedButton(
             onPressed: () {
-              // Tambahkan logika untuk tombol "Pesan Sekarang" di sini
-              // Misalnya, navigasi ke halaman pembayaran atau tindakan lainnya.
+              Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UploadPage()),
+                  );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: kPrimaryColor,
