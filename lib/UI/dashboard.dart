@@ -15,18 +15,6 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  final List<String> _menuTitles = [
-    'Dashboard',
-    'Event',
-    'Profile',
-  ];
-
-  final List<IconData> _menuIcons = [
-    Icons.home,
-    Icons.calendar_today,
-    Icons.person,
-  ];
-
   Future<void> _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
@@ -95,8 +83,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
           );
         case 1:
-          
-        case 2:
+        
+        case 2: 
+
+        case 3:
           return ProfileScreen();
         default:
           return Center(
@@ -113,16 +103,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.compass_calibration_rounded),
+            icon: Icon(Icons.home),
             label: 'Discover',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Event',
+            icon: Icon(Icons.chat),
+            label: 'Pesan',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.car_rental),
+            label: 'Pesanan saya',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
         currentIndex: _selectedIndex,

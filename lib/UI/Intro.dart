@@ -1,81 +1,101 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:introduction_screen/introduction_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilink_v2/UI/login.dart';
+import 'package:mobilink_v2/utills/constants.dart';
+import 'package:mobilink_v2/utills/font_size.dart';
+import 'package:mobilink_v2/utills/theme_colors.dart';
+import 'package:mobilink_v2/Component/MainButton.dart';
 
-class IntroductionScreens extends StatelessWidget {
+class IntroductionScreens extends StatefulWidget {
   const IntroductionScreens({Key? key}) : super(key: key);
 
   @override
+  _IntroductionScreensState createState() => _IntroductionScreensState();
+}
+
+class _IntroductionScreensState extends State<IntroductionScreens> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IntroductionScreen(
-        pages: [
-          PageViewModel(
-            title: 'Kemudahan dalam Rental Mobil',
-            body: 'Temukan kemudahan dalam menyewa mobil dengan layanan kami yang cepat dan praktis.',
-            image: buildImage("assets/images/image_1.png"),
-            decoration: getPageDecoration(),
+      body: Stack(
+        children: [
+          Image(
+            image: AssetImage('assets/images/bg.jpg'),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover, // atau sesuaikan dengan fit yang Anda butuhkan
           ),
-          PageViewModel(
-            title: 'Nikmati Liburan Anda dengan Mobilink',
-            body: 'Liburan Anda lebih menyenangkan dengan Mobilink. Pilihan mobil berkualitas untuk setiap perjalanan.',
-            image: buildImage("assets/images/image_2.png"),
-            decoration: getPageDecoration(),
+
+          Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.transparent,
+                  ThemeColors.scaffoldBgColor,
+                ],
+              ),
+            ),
           ),
-          PageViewModel(
-            title: 'Nikmati Kenyamanan dalam Berwisata',
-            body: 'Rasakan kenyamanan maksimal dalam setiap perjalanan wisata Anda bersama layanan prima kami.',
-            image: buildImage("assets/images/image_3.png"),
-            decoration: getPageDecoration(),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Mobilink',
+                      style: GoogleFonts.poppins(
+                        color: ThemeColors.titleColor,
+                        fontSize: FontSize.xxxLarge,
+                        fontWeight: FontWeight.w600
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                  Text(
+                    'Nikmati kesenangan liburan anda\ndengan layanan mobilink.',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      color: ThemeColors.whiteTextColor,
+                      fontSize: FontSize.medium,
+                    ),
+                  ),
+                  SizedBox(height: 30,),
+                  Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(16.0),
+                          backgroundColor: kPrimaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10), // Atur radius sesuai kebutuhan Anda
+                          ),
+                        ),
+                        child: Text(
+                          'Get Started',
+                          style: TextStyle(fontSize: 18.0, color: Colors.white), // Atur ukuran teks sesuai kebutuhan Anda
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
         ],
-        onDone: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-          );
-        },
-        scrollPhysics: const ClampingScrollPhysics(),
-        showDoneButton: true,
-        showNextButton: true,
-        showSkipButton: true,
-        skip: const Text("Skip", style: TextStyle(fontWeight: FontWeight.w600)),
-        next: const Icon(Icons.forward),
-        done: const Text("Get Started", style: TextStyle(fontWeight: FontWeight.w600)),
-        dotsDecorator: getDotsDecorator(),
-      ),
-    );
-  }
-
-  Widget buildImage(String imagePath) {
-    return Center(
-      child: Image.asset(
-        imagePath,
-        width: 450,
-        height: 200,
-      ),
-    );
-  }
-
-  PageDecoration getPageDecoration() {
-    return const PageDecoration(
-      imagePadding: EdgeInsets.only(top: 120),
-      pageColor: Colors.white,
-      bodyPadding: EdgeInsets.only(top: 8, left: 20, right: 20),
-      titlePadding: EdgeInsets.only(top: 50),
-      bodyTextStyle: TextStyle(color: Colors.black54, fontSize: 15),
-    );
-  }
-
-  DotsDecorator getDotsDecorator() {
-    return const DotsDecorator(
-      spacing: EdgeInsets.symmetric(horizontal: 2),
-      activeColor: Colors.indigo,
-      color: Colors.grey,
-      activeSize: Size(12, 5),
-      activeShape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(25.0)),
       ),
     );
   }

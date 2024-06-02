@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobilink_v2/Modal/car.dart';
+import 'package:mobilink_v2/Shared/number_to_words.dart';
 import 'package:mobilink_v2/utills/constants.dart';
+import 'package:mobilink_v2/Shared/number_to_words.dart';  // Import the number_to_words.dart file
 
 enum PaymentMethod { bayarLangsung, bayarDP }
 
@@ -30,6 +32,7 @@ class _BookingPageState extends State<BookingPage> {
   @override
   Widget build(BuildContext context) {
     int totalPayment = _calculateTotalPayment();
+    String totalPaymentInWords = numberToWords(totalPayment);
 
     return Scaffold(
       appBar: AppBar(
@@ -135,7 +138,7 @@ class _BookingPageState extends State<BookingPage> {
                   Text(
                     _selectedDateRange != null
                         ? '${DateFormat('dd/MM/yyyy').format(_selectedDateRange!.start)} - ${DateFormat('dd/MM/yyyy').format(_selectedDateRange!.end)}'
-                        : 'Tanggal pemesanan',
+                        : 'Pilih tanggal terlebih dahulu',
                   ),
                   Text(
                     'Tanggal',
@@ -146,7 +149,7 @@ class _BookingPageState extends State<BookingPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -164,7 +167,19 @@ class _BookingPageState extends State<BookingPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '($totalPaymentInWords rupiah)',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 13),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
