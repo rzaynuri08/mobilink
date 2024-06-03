@@ -7,6 +7,7 @@ import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobilink_v2/API/ApiService.dart';
 import 'package:mobilink_v2/Modal/car.dart';
+import 'package:mobilink_v2/UI/Pages/transaction.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -86,7 +87,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         case 1:
           return ChatPage();
         case 2: 
-
+          return TransactionPage();
         case 3:
           return ProfileScreen();
         default:

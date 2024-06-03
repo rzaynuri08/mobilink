@@ -4,18 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: UploadPage(),
-    );
-  }
-}
+import 'package:mobilink_v2/utills/constants.dart';
 
 class UploadPage extends StatefulWidget {
   @override
@@ -93,30 +82,39 @@ class _UploadPageState extends State<UploadPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _image == null
-                ? Text('No image selected.')
-                : Image.file(_image!, height: 200),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: getImage,
-              child: Text('Pilih Gambar dari Galeri'),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                textStyle: TextStyle(fontSize: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: ElevatedButton(
+                onPressed: getImage,
+                child: _image == null
+                    ? Text('Pilih Gambar dari Galeri')
+                    : Image.file(_image!, height: 400, width: double.infinity, fit: BoxFit.cover),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  textStyle: TextStyle(fontSize: 16),
+                  minimumSize: Size(double.infinity, 400), // Make button square
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero), // Remove rounded corners
+                ),
               ),
             ),
-            SizedBox(height: 20),
-            _image != null
-                ? ElevatedButton(
-                    onPressed: () => showConfirmationDialog(context),
-                    child: Text('Kirim Sekarang'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      textStyle: TextStyle(fontSize: 16),
-                    ),
-                  )
-                : Container(),
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: ElevatedButton(
+            onPressed: _image != null ? () => showConfirmationDialog(context) : null,
+            child: Text('Kirim Sekarang', style: TextStyle(color: Colors.white),),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kPrimaryColor, // Set button background color to blue
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+              textStyle: TextStyle(fontSize: 16),
+              minimumSize: Size(double.infinity, 50), // Full width button
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), // Set rounded corners
+            ),
+          ),
         ),
       ),
     );
