@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:mobilink_v2/Modal/car.dart';
 import 'package:mobilink_v2/Shared/number_to_words.dart';
+import 'package:mobilink_v2/UI/PaymentDialog.dart';
 import 'package:mobilink_v2/UI/UploadPage.dart';
 import 'package:mobilink_v2/utills/constants.dart';
-import 'package:mobilink_v2/Shared/number_to_words.dart';  // Import the number_to_words.dart file
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobilink_v2/Modal/PaymentModel.dart';
+import 'package:mobilink_v2/API/ApiService.dart';
 
 enum PaymentMethod { bayarLangsung, bayarDP }
 
@@ -20,6 +25,8 @@ class BookingPage extends StatefulWidget {
 class _BookingPageState extends State<BookingPage> {
   DateTimeRange? _selectedDateRange;
   PaymentMethod _selectedPaymentMethod = PaymentMethod.bayarLangsung;
+  String paymentMethodText = 'Metode Pembayaran';
+  String? _selectedPaymentIdJenis;
 
   int _calculateTotalPayment() {
     if (_selectedDateRange != null) {
@@ -28,6 +35,49 @@ class _BookingPageState extends State<BookingPage> {
       return days * pricePerDay;
     }
     return 0;
+  }
+
+  Future<void> _sendBookingData() async {
+    String username = '';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.getString('username') ?? '';
+
+    Map<String, dynamic> bookingData = {
+      'total': _calculateTotalPayment(),
+      'username': widget.car.username,
+      'username_mb': username,
+      'id_mobil': widget.car.idMobil,
+      'id_jenis': _selectedPaymentIdJenis ?? '',
+      'tanggal_mulai': DateFormat('yyyy-MM-dd').format(_selectedDateRange!.start).toString(),
+      'tanggal_akhir': DateFormat('yyyy-MM-dd').format(_selectedDateRange!.end).toString(),
+      'tipe_bayar': _selectedPaymentMethod == PaymentMethod.bayarLangsung ? 0 : 1,
+    };
+
+    print('Data Pemesanan:');
+    print(bookingData);
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://mobilink.my.id/api/billy123/transaksi'),
+        body: json.encode(bookingData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      var responseData = json.decode(response.body);
+      var message = responseData['message'];
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UploadPage(message: message),
+        ),
+      );
+      print('$message');
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 
   @override
@@ -168,27 +218,27 @@ class _BookingPageState extends State<BookingPage> {
                 ],
               ),
             ),
+            SizedBox(height: 20),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '($totalPaymentInWords rupiah)',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 13),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Metode Pembayaran'),
+                  Text(paymentMethodText),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => PaymentSelectionDialog(paymentService: ApiService()),
+                      ).then((selectedPayment) {
+                        if (selectedPayment != null) {
+                          setState(() {
+                            paymentMethodText = selectedPayment.namaPembayaran;
+                            _selectedPaymentIdJenis = selectedPayment.idJenis;
+                          });
+                        }
+                      });
+                    },
                     child: Text(
                       'Pilih Pembayaran',
                       style: TextStyle(
@@ -264,20 +314,18 @@ class _BookingPageState extends State<BookingPage> {
           width: double.infinity,
           height: 50,
           child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UploadPage()),
-                  );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: kPrimaryColor,
-              elevation: 0,
-            ),
+            onPressed: _sendBookingData,
             child: Text(
               'Pesan Sekarang',
               style: TextStyle(
-                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                color: Colors.white
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kPrimaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
               ),
             ),
           ),

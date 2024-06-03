@@ -7,6 +7,9 @@ import 'dart:convert';
 import 'package:mobilink_v2/utills/constants.dart';
 
 class UploadPage extends StatefulWidget {
+  final String message;
+
+  UploadPage({required this.message}); 
   @override
   _UploadPageState createState() => _UploadPageState();
 }
@@ -14,6 +17,14 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage> {
   File? _image;
   final picker = ImagePicker();
+  late String id_transaksi;
+
+  @override
+  void initState() {
+    super.initState();
+    id_transaksi = widget.message;  // Assume the message contains the transaction ID
+    print('Message from previous page: ${widget.message}');
+  }
 
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -30,9 +41,10 @@ class _UploadPageState extends State<UploadPage> {
   Future uploadImage(File image) async {
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://api.example.com/upload'),
+      Uri.parse('https://mobilink.my.id/api/billy123/upload-bukti'),
     );
-    request.files.add(await http.MultipartFile.fromPath('image', image.path));
+    request.fields['id_transaksi'] = id_transaksi;  // Add transaction ID to the request
+    request.files.add(await http.MultipartFile.fromPath('bukti_pembayaran', image.path));  // Change the field name to 'bukti_pembayaran'
     
     var res = await request.send();
     if (res.statusCode == 200) {
@@ -112,7 +124,7 @@ class _UploadPageState extends State<UploadPage> {
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
               textStyle: TextStyle(fontSize: 16),
               minimumSize: Size(double.infinity, 50), // Full width button
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), // Set rounded corners
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), // Set rounded corners
             ),
           ),
         ),
