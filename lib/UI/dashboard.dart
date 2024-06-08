@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobilink_v2/UI/Pages/Chats.dart';
 import 'package:mobilink_v2/UI/Pages/Profile.dart';
 import 'package:mobilink_v2/UI/Pages/Discover.dart';
+import 'package:mobilink_v2/UI/Pages/order.dart';
 import 'package:mobilink_v2/utills/constants.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,65 +67,94 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Widget _getSelectedPage() {
+    switch (_selectedIndex) {
+      case 0:
+        return FutureBuilder<List<CarModel>>(
+          future: ApiService().fetchCars(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              List<CarModel> cars = snapshot.data?? [];
+              return CarListView(cars: cars);
+            }
+          },
+        );
+      case 1:
+        return OrderPage();
+      case 2:
+        return TransactionPage();
+      case 3:
+        return ProfileScreen();
+      default:
+        return Center(
+          child: Text(
+            'Dashboard',
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget _getSelectedPage() {
-      switch (_selectedIndex) {
-        case 0:
-        return FutureBuilder<List<CarModel>>(
-            future: ApiService().fetchCars(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                List<CarModel> cars = snapshot.data ?? [];
-                return CarListView(cars: cars);
-              }
-            },
-          );
-        case 1:
-          return ChatPage();
-        case 2: 
-          return TransactionPage();
-        case 3:
-          return ProfileScreen();
-        default:
-          return Center(
-            child: Text(
-              'Dashboard',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-          );
-      }
-    }
-
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       body: _getSelectedPage(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Discover',
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 10.0),
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, -1),
+              blurRadius: 10.0,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30.0),
+          child: Container(
+            color: Colors.transparent,
+            child: BottomNavigationBar(
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: _selectedIndex == 0
+                     ? Container(
+                          padding: EdgeInsets.all(0.0),
+                          child: Icon(Icons.home, color: kPrimaryColor),
+                        )
+                      : Icon(Icons.home),
+                  label: 'Beranda',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.car_rental),
+                  label: 'Pesanan Saya',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.history),
+                  label: 'Riwayat Transaksi',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profil',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: kPrimaryColor,
+              unselectedItemColor: Colors.black,
+              onTap: _onItemTapped,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              type: BottomNavigationBarType.fixed,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Pesan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.car_rental),
-            label: 'Pesanan saya',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: kPrimaryColor,
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }

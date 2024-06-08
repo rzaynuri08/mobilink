@@ -10,6 +10,7 @@ import 'package:mobilink_v2/utills/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobilink_v2/Modal/PaymentModel.dart';
 import 'package:mobilink_v2/API/ApiService.dart';
+import 'package:mobilink_v2/Modal/booking.dart';
 
 enum PaymentMethod { bayarLangsung, bayarDP }
 
@@ -27,6 +28,34 @@ class _BookingPageState extends State<BookingPage> {
   PaymentMethod _selectedPaymentMethod = PaymentMethod.bayarLangsung;
   String paymentMethodText = 'Metode Pembayaran';
   String? _selectedPaymentIdJenis;
+  List<Booking> _bookings = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBookings();
+  }
+
+  Future<void> _fetchBookings() async {
+    try {
+      List<Booking> bookings = await ApiService().fetchBookings(widget.car.idMobil);
+      setState(() {
+        _bookings = bookings;
+      });
+    } catch (e) {
+      print('Failed to load bookings: $e');
+    }
+  }
+
+  bool _isDateRangeAvailable(DateTimeRange range) {
+    for (Booking booking in _bookings) {
+      if (range.start.isBefore(booking.tanggal_akhir) &&
+          range.end.isAfter(booking.tanggal_mulai)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   int _calculateTotalPayment() {
     if (_selectedDateRange != null) {
@@ -38,6 +67,14 @@ class _BookingPageState extends State<BookingPage> {
   }
 
   Future<void> _sendBookingData() async {
+    if (_selectedDateRange == null) {
+      // Show a message to select a date range
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select a date range')),
+      );
+      return;
+    }
+
     String username = '';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     username = prefs.getString('username') ?? '';
@@ -157,9 +194,15 @@ class _BookingPageState extends State<BookingPage> {
                         lastDate: DateTime(2101),
                       );
                       if (pickedDateRange != null) {
-                        setState(() {
-                          _selectedDateRange = pickedDateRange;
-                        });
+                        if (_isDateRangeAvailable(pickedDateRange)) {
+                          setState(() {
+                            _selectedDateRange = pickedDateRange;
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Tanggal tersebut sudah di booking')),
+                          );
+                        }
                       }
                     },
                     child: Text(

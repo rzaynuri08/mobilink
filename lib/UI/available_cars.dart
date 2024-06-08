@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobilink_v2/UI/CarDetailView.dart';
 import '../API/ApiService.dart';
 import '../Modal/car.dart';
 
@@ -109,7 +110,14 @@ class _AvailableCarsState extends State<AvailableCars> {
                       itemCount: filteredCars.length,
                       itemBuilder: (context, index) {
                         CarModel car = filteredCars[index];
-                        return Container(
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CarDetailView(car: car)),
+                          );
+                          },
+                          child:  Container(
                           margin: EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -162,9 +170,10 @@ class _AvailableCarsState extends State<AvailableCars> {
                                     width: null,
                                     height: null,
                                     fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );

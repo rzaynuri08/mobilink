@@ -9,7 +9,7 @@ import 'package:mobilink_v2/utills/constants.dart';
 class UploadPage extends StatefulWidget {
   final String message;
 
-  UploadPage({required this.message}); 
+  UploadPage({required this.message});
   @override
   _UploadPageState createState() => _UploadPageState();
 }
@@ -52,6 +52,25 @@ class _UploadPageState extends State<UploadPage> {
       final resBody = await res.stream.bytesToString();
       final jsonResponse = json.decode(resBody);
       // Handle jsonResponse as needed
+
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Sukses'),
+            content: Text('Gambar berhasil di upload.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     } else {
       print('Image upload failed.');
     }

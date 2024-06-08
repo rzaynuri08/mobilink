@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextField(
                         controller: _usernameController,
                         decoration: InputDecoration(
-                          labelText: "Email ID",
+                          labelText: "Username",
                           labelStyle: TextStyle(fontSize: 14, color: Colors.grey),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),

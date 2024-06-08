@@ -43,12 +43,13 @@ class CarListView extends StatelessWidget {
                       ),
                     ),
                     CircleAvatar(
+                      radius: 30.0,
                       backgroundImage: NetworkImage(
                         user != null
                             ? "https://mobilink.my.id/${user.foto_profil}"
-                            : 'https://via.placeholder.com/150', // Placeholder image URL
+                            : 'https://via.placeholder.com/150',
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

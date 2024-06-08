@@ -87,18 +87,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Divider(),
                       _buildMenuItem(
-                        icon: Icons.notifications,
-                        title: 'Pemberitahuan',
-                        onTap: () {},
-                      ),
-                      Divider(),
-                      _buildMenuItem(
-                        icon: Icons.language,
-                        title: 'Bahasa',
-                        onTap: () {},
-                      ),
-                      Divider(),
-                      _buildMenuItem(
                         icon: Icons.settings,
                         title: 'Pengaturan aplikasi',
                         onTap: () {},
@@ -107,12 +95,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildMenuItem(
                         icon: Icons.info_outline,
                         title: 'Syarat dan Kondisi',
-                        onTap: () {},
-                      ),
-                      Divider(),
-                      _buildMenuItem(
-                        icon: Icons.headset_mic,
-                        title: 'Dukungan pelanggan',
                         onTap: () {},
                       ),
                       Divider(),
