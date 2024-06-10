@@ -127,4 +127,16 @@ class ApiService {
     throw e;
   }
 }
+
+Future<List<Payment>> fetchPaymentMethodByID(String idJenis) async {
+    final response = await http.get(Uri.parse('$apiUrl/jenis-pembayaran/$idJenis'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonData = json.decode(response.body);
+      List<Payment> payments = jsonData.map((json) => Payment.fromJson(json)).toList();
+      return payments;
+    } else {
+      throw Exception('Failed to load payments');
+    }
+  }
 }

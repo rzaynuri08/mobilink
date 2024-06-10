@@ -80,7 +80,7 @@ class CarListView extends StatelessWidget {
                                     color: Colors.grey[100],
                                   ),
                                 ),
-                                SizedBox(height: 24),
+                                SizedBox(height: 26),
                                 Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey[100],

@@ -36,7 +36,7 @@ class _TransactionPageState extends State<TransactionPage> {
         transactions = await ApiService().fetchTransactions(usernameMb);
       } else if (dropdownValue == 'Belum Dibayar') {
         transactions = await ApiService().fetchTransactions(usernameMb, status: 0);
-      } else if (dropdownValue == 'Menunggu Persetujuan') {
+      } else if (dropdownValue == 'Pending') {
         transactions = await ApiService().fetchTransactions(usernameMb, status: 1);
       } else if (dropdownValue == 'Berhasil') {
         transactions = await ApiService().fetchTransactions(usernameMb, status: 2);
@@ -54,7 +54,7 @@ class _TransactionPageState extends State<TransactionPage> {
       case '0':
         return 'Belum Dibayar';
       case '1':
-        return 'Menunggu Persetujuan';
+        return 'Pending';
       case '2':
         return 'Berhasil';
       case '3':
@@ -69,12 +69,6 @@ class _TransactionPageState extends State<TransactionPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Riwayat Transaksi'),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          toolbarHeight: 0,
-        ),
         backgroundColor: Colors.grey[100], // Set background color to grey[100]
         body: Padding(
           padding: const EdgeInsets.only(top: 40, left: 16, right: 16),
@@ -130,7 +124,6 @@ class _TransactionPageState extends State<TransactionPage> {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
                   itemCount: transactions.length,

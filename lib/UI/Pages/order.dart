@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobilink_v2/API/ApiService.dart';
 import 'package:mobilink_v2/Modal/booking.dart';
+import 'package:mobilink_v2/UI/OrderViewDetail.dart';
 
 class OrderPage extends StatefulWidget {
   @override
@@ -59,7 +60,12 @@ class _OrderPageState extends State<OrderPage> {
                   final booking = snapshot.data![index];
                   return GestureDetector(
                     onTap: () {
-                      // Implement what happens when an item is tapped
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderViewDetail(booking: booking),
+                        ),
+                      );
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),

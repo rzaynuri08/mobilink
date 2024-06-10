@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -21,6 +23,8 @@ class _CarDetailViewState extends State<CarDetailView> {
   TextEditingController endDateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
+  late double latitude;
+  late double longitude;
 
   @override
   void dispose() {
@@ -33,8 +37,8 @@ class _CarDetailViewState extends State<CarDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final double latitude = -7.91785;
-    final double longitude = 113.83455;
+    latitude = widget.car.latitude;
+    longitude = widget.car.longitude;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -89,7 +93,8 @@ class _CarDetailViewState extends State<CarDetailView> {
                               children: [
                                 _buildCarInfoCard(Icons.people, 'Kapasitas', widget.car.kapasitasPenumpang, 0),
                                 _buildCarInfoCard(Icons.local_gas_station, 'Bahan Bakar', widget.car.bahanBakar, 1),
-                                _buildCarInfoCard(Icons.speed, 'Kecepatan', '${widget.car.kecepatan}', 2),
+                                _buildCarInfoCard(Icons.speed, 'Kecepatan', '${widget.car.kecepatan} Km/h', 2),
+                                _buildCarInfoCard(Icons.speed, 'Transmisi', '${widget.car.transmisi}', 3),
                               ],
                             ),
                           ),

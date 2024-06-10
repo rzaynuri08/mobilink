@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:mobilink_v2/UI/dashboard.dart';
 import 'dart:convert';
 
 import 'package:mobilink_v2/utills/constants.dart';
 
 class UploadPage extends StatefulWidget {
   final String message;
+  final String selectedPaymentIdJenis;
 
-  UploadPage({required this.message});
+  UploadPage({required this.message, required this.selectedPaymentIdJenis});
   @override
   _UploadPageState createState() => _UploadPageState();
 }
@@ -18,12 +20,15 @@ class _UploadPageState extends State<UploadPage> {
   File? _image;
   final picker = ImagePicker();
   late String id_transaksi;
+  late String IdJenis;
 
   @override
   void initState() {
     super.initState();
-    id_transaksi = widget.message;  // Assume the message contains the transaction ID
+    id_transaksi = widget.message; 
+    IdJenis = widget.selectedPaymentIdJenis;
     print('Message from previous page: ${widget.message}');
+    print(IdJenis);
   }
 
   Future getImage() async {
@@ -64,7 +69,12 @@ class _UploadPageState extends State<UploadPage> {
               TextButton(
                 child: Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DashboardScreen(),
+                          ),
+                        );
                 },
               ),
             ],

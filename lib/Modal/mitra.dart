@@ -3,8 +3,8 @@ class Dealer {
   final String namaLengkap;
   final String nomorHp;
   final String namaToko;
-  final String latitude;
-  final String longitude;
+  final double latitude;
+  final double longitude;
   final String statusAkun;
   final String logoMitra;
   final String idLevel;
@@ -29,8 +29,8 @@ class Dealer {
       namaLengkap: json['nama_lengkap'].toString(),
       nomorHp: json['nomor_hp'].toString(),
       namaToko: json['nama_toko'].toString(),
-      latitude: json['latitude'].toString(),
-      longitude: json['longitude'].toString(),
+      latitude: double.parse(json['latitude'].toString()), // Ubah menjadi double
+      longitude: double.parse(json['longitude'].toString()),
       statusAkun: json['status_akun'].toString(),
       logoMitra: json['logo_mitra'].toString(),
       idLevel: json['id_lvl'].toString(),

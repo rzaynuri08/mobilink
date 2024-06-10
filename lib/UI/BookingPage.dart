@@ -108,7 +108,8 @@ class _BookingPageState extends State<BookingPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => UploadPage(message: message),
+          builder: (context) => UploadPage(message: message,
+          selectedPaymentIdJenis: _selectedPaymentIdJenis ?? ''),
         ),
       );
       print('$message');

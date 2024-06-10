@@ -169,11 +169,9 @@ class ViewDetailTransaction extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UploadPage(message: transaction.idTransaksi),
-                            ),
+                            Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => UploadPage(message : transaction.idTransaksi, selectedPaymentIdJenis: transaction.idJenis,)),
                           );
                         },
                         child: Padding(
