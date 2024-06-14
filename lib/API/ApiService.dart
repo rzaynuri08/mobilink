@@ -128,15 +128,15 @@ class ApiService {
   }
 }
 
-Future<List<Payment>> fetchPaymentMethodByID(String idJenis) async {
-    final response = await http.get(Uri.parse('$apiUrl/jenis-pembayaran/$idJenis'));
+Future<Payment> fetchPaymentMethodByID(String idJenis) async {
+  final response = await http.get(Uri.parse('$apiUrl/jenis-pembayaran/$idJenis'));
 
-    if (response.statusCode == 200) {
-      List<dynamic> jsonData = json.decode(response.body);
-      List<Payment> payments = jsonData.map((json) => Payment.fromJson(json)).toList();
-      return payments;
-    } else {
-      throw Exception('Failed to load payments');
-    }
+  if (response.statusCode == 200) {
+    Map<String, dynamic> jsonData = json.decode(response.body);
+    return Payment.fromJson(jsonData);
+  } else {
+    throw Exception('Failed to load payments');
   }
+}
+
 }

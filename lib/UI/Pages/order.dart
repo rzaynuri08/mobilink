@@ -116,7 +116,7 @@ class _OrderPageState extends State<OrderPage> {
                             Expanded(
                               flex: 3,
                               child: Image.network(
-                                "https://mobilink.my.id/${booking.foto_mobil}",
+                                "https://mobilink.my.id/${booking.fotoMobil}",
                                 fit: BoxFit.cover,
                               ),
                             ),

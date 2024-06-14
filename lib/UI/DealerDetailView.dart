@@ -34,6 +34,32 @@ class _DealerDetailViewState extends State<DealerDetailView> {
         backgroundColor: Colors.grey[100],
         shadowColor: Colors.black,
         title: Text("Dealer Detail"),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0), // Add padding here
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                Icons.keyboard_arrow_left,
+                color: Colors.black,
+                size: 28,
+              ),
+            ),
+          ),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(

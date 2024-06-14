@@ -18,6 +18,32 @@ class ViewDetailTransaction extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Transaksi'),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0), // Add padding here
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                Icons.keyboard_arrow_left,
+                color: Colors.black,
+                size: 28,
+              ),
+            ),
+          ),
+        ),
       ),
       body: Container(
         key: UniqueKey(),
@@ -169,9 +195,13 @@ class ViewDetailTransaction extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 0),
                       child: ElevatedButton(
                         onPressed: () {
-                            Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => UploadPage(message : transaction.idTransaksi, selectedPaymentIdJenis: transaction.idJenis,)),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UploadPage(
+                                      message: transaction.idTransaksi,
+                                      selectedPaymentIdJenis: transaction.idJenis,
+                                    )),
                           );
                         },
                         child: Padding(

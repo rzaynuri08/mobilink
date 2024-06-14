@@ -128,7 +128,7 @@ class CarListView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "TOP DEALS",
+                                    "Terlaris",
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
@@ -187,7 +187,7 @@ class CarListView extends StatelessWidget {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Available Cars",
+                                            "Mobil Tersedia",
                                             style: TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.bold,
@@ -195,7 +195,7 @@ class CarListView extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            "Long term and short term",
+                                            "Jangka waktu panjang maupun pendek",
                                             style: TextStyle(
                                               fontSize: 16,
                                               color: Colors.white,
@@ -228,7 +228,7 @@ class CarListView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "TOP DEALERS",
+                                    "Dealers Terlaris",
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,

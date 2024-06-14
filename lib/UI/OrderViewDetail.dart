@@ -15,12 +15,37 @@ class OrderViewDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double latitude = -7.91785;
-    final double longitude = 113.83455;
+    final double latitude = booking.latitude;
+    final double longitude = booking.longitude;
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Pesanan'),
-        backgroundColor: Colors.white,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0), // Add padding here
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                Icons.keyboard_arrow_left,
+                color: Colors.black,
+                size: 28,
+              ),
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -45,7 +70,7 @@ class OrderViewDetail extends StatelessWidget {
                 ),
                 Center(
                   child: Image.network(
-                    "https://mobilink.my.id/${booking.foto_mobil}",
+                    "https://mobilink.my.id/${booking.fotoMobil}",
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -75,50 +100,6 @@ class OrderViewDetail extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white, // Ubah warna latar belakang bottom bar menjadi putih
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Tambahkan logika untuk menangani ketika tombol ditekan
-                    // Pastikan untuk memeriksa apakah tanggal awal booking telah terlewati
-                    DateTime now = DateTime.now();
-                    if (now.isAfter(booking.tanggal_mulai)) {
-                      // Handle ketika tanggal awal booking telah terlewati
-                      // Misalnya, navigasi ke layar pengambilan mobil
-                      
-                    } else {
-                      // Handle ketika tanggal awal booking belum terlewati
-                      // Misalnya, tampilkan pesan kesalahan atau tidak melakukan apa-apa
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Tanggal awal booking belum terlewati.'),
-                        ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    // Tambahkan padding pada teks tombol
-                    disabledBackgroundColor: Colors.grey,
-                    padding: EdgeInsets.symmetric(vertical:20, horizontal: 30),
-                    // Ubah warna latar belakang tombol
-                    backgroundColor: kPrimaryColor,
-                  ),
-                  child: Text(
-                    'AMBIL SEKARANG',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -132,7 +113,7 @@ class StatusProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, int> statusToProgress = {
       'Belum Diambil': 0,
-      'Sudah Diambil': 1,
+      'Sedang Disewa': 1,
       'Belum Dikembalikan': 2,
       'Sudah Dikembalikan': 3,
     };
@@ -310,8 +291,8 @@ class StatusMessage extends StatelessWidget {
 
     if (status == 'Belum Diambil') {
       message = 'Pembayaran berhasil, ambil mobil pada tanggal ${DateFormat('dd MMMM yyyy').format(booking.tanggal_mulai)}';
-    } else if (status == 'Sudah Diambil') {
-      message = 'Mobil sudah diambil oleh pelanggan.';
+    } else if (status == 'Sedang Disewa') {
+      message = 'Mobil sudah diambil oleh pelanggan. Kamu bisa mengembalikan mobil pada ${DateFormat('dd MMMM yyyy').format(booking.tanggal_akhir)}';
     } else if (status == 'Belum Dikembalikan') {
       message = 'Mobil belum dikembalikan oleh pelanggan.';
     } else if (status == 'Sudah Dikembalikan') {
